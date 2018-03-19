@@ -24,6 +24,29 @@ You need to have webpack installed, you can get that by running the following co
 ```
 	npm install -g webpack
 ```
+
+Once you have cloned the project you will need to install the node modules. Do this by executing the following in the root of the project:
+
+```
+	npm install
+```
+
+Or you can use yarn which is much better!
+
+```
+	yarn install
+```
+
+#### Environment Variables
+You will need to set the following Environment Variables:
+
+`API_URL` - This is usually `http://localhost:5000` or the port your API is running on
+
+`ASPNETCORE_URLS` - For development, set this to `http://localhost:8008`
+
+`ASPNETCORE_ENVIRONMENT` - For development, set this to `Development`
+***
+
 ***
 ### Server
 Your server will need to have Docker installed. For ease we recommend [Digital Ocean](https://www.digitalocean.com) as they have excellent deals on droplet hosting (from as little as $5/month).
@@ -33,10 +56,10 @@ Your server will need to have Docker installed. For ease we recommend [Digital O
 An individual host does not require massives amounts of ram or compute power, however scale the server size for your needs. The application stack can also be load balanced.
 ***
 ### Database
-You will need a SQL database for the fufilment engine. You can use any of the database providers supported by entity framework core. Some are provided below for convinence and the full list can be found [here](https://docs.microsoft.com/en-us/ef/core/providers/)
+You will need a SQL database for the fufilment engine. You can use any of the database providers below. The full list of EntityFramework Core providers can be found [here](https://docs.microsoft.com/en-us/ef/core/providers/), submit a PR to add another provider.
 
 * SQL Server 2008 onwards
 * PostgreSQL
-* MySQL, MariaDB
+* MySQL
 
 
