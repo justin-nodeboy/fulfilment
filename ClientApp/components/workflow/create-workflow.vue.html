@@ -1,0 +1,130 @@
+<template>
+    <v-container>
+        <h1 class="black--text">Create Workflow</h1>
+        <v-navigation-drawer app clipped fixed right permanent class="primary" dark>
+            <v-list>
+                <v-list-tile v-for="item in createWorkflowItems" :key="item.title" @click="processClick(item)">
+                    <v-list-tile-action>
+                        <v-icon>{{ item.icon }}</v-icon>
+                    </v-list-tile-action>
+                    <v-list-tile-content>
+                        <v-list-tile-title>{{ item.title }}</v-list-tile-title>
+                    </v-list-tile-content>
+                </v-list-tile>
+            </v-list>
+        </v-navigation-drawer>
+        <v-card>
+            <v-stage ref="konva" :config="configKonva">
+                <v-layer ref="layer">
+
+                </v-layer>
+            </v-stage>
+        </v-card>
+        <v-dialog v-model="addNewDialog" persistent max-width="70%">
+            <v-card>
+                <v-card-title class="headline">Add a new Fulfilment Node</v-card-title>
+                <v-card-text>
+                    <v-layout>
+                        <v-flex>
+                            <v-select :items="nodeTypes" v-model="node.NodeType" label="Select Type" required single-line></v-select>
+                            <h5>Inputs
+                                <v-btn color="primary" flat @click="showInput = true">
+                                    <v-icon>add_circle</v-icon>
+                                </v-btn>
+                            </h5>
+                            <v-layout v-show="showInput">
+                                <v-flex mr-2>
+                                    <v-text-field required label="Input Name" v-model="input.name"></v-text-field>
+                                </v-flex>
+                                <v-flex lg4 ml-2>
+                                    <v-select :items="inputTypes" v-model="input.type" label="Select Type" required single-line></v-select>
+                                </v-flex>
+                                <v-flex>
+                                    <v-btn @click="addToInput" flat color="primary">
+                                        <v-icon>save</v-icon>
+                                    </v-btn>
+                                    <v-btn @click="showInput = false" flat color="error">
+                                        <v-icon>clear</v-icon>
+                                    </v-btn>
+                                </v-flex>
+                            </v-layout>
+                            <h5>Outputs
+                                <v-btn color="primary" flat @click="showOutput = true">
+                                    <v-icon>add_circle</v-icon>
+                                </v-btn>
+                            </h5>
+                            <v-layout v-show="showOutput">
+                                <v-flex mr-2>
+                                    <v-text-field required label="Output Name" v-model="output.name"></v-text-field>
+                                </v-flex>
+                                <v-flex lg4 ml-2>
+                                    <v-select :items="inputTypes" v-model="output.type" label="Select Type" required single-line></v-select>
+                                </v-flex>
+                                <v-flex>
+                                    <v-btn @click="addToOutput" flat color="primary">
+                                        <v-icon>save</v-icon>
+                                    </v-btn>
+                                    <v-btn @click="showOutput = false" flat color="error">
+                                        <v-icon>clear</v-icon>
+                                    </v-btn>
+                                </v-flex>
+                            </v-layout>
+                        </v-flex>
+                        <v-flex>
+                            <div class="ml-4" v-if="inputsArray.length > 0">
+                                <v-layout>
+                                    <h3>Saved Inputs</h3>
+                                </v-layout>
+                                <v-layout>
+                                    <v-layout>
+                                        <v-flex>
+                                            <div v-for="(input, index) in inputsArray" :key="index">
+                                                <label>
+                                                    <strong>Name: </strong>{{input.name}}</label>
+                                                <label>
+                                                    <strong>Type: </strong>{{input.type}}</label>
+                                                <v-btn @click="removeInput(index)" flat color="error">
+                                                    <v-icon>clear</v-icon>
+                                                </v-btn>
+                                            </div>
+
+                                        </v-flex>
+                                    </v-layout>
+                                </v-layout>
+                            </div>
+
+                            <div class="ml-4" v-if="outputsArray.length > 0">
+                                <v-layout>
+                                    <h3>Saved Outputs</h3>
+                                </v-layout>
+                                <v-layout>
+                                    <v-layout>
+                                        <v-flex>
+                                            <div v-for="(output, index) in outputsArray" :key="index">
+                                                <label>
+                                                    <strong>Name: </strong>{{output.name}}</label>
+                                                <label>
+                                                    <strong>Type: </strong>{{output.type}}</label>
+                                                <v-btn @click="removeOutput(index)" flat color="error">
+                                                    <v-icon>clear</v-icon>
+                                                </v-btn>
+                                            </div>
+
+                                        </v-flex>
+                                    </v-layout>
+                                </v-layout>
+                            </div>
+                        </v-flex>
+                    </v-layout>
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="error darken-1" flat @click.native="addNewDialog = false">Cancel</v-btn>
+                    <v-btn color="primary darken-1" flat @click.native="addNewNode">Add Node</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+    </v-container>
+</template>
+
+<script src="./create-workflow.ts"></script>
